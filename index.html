@@ -1,480 +1,974 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="yandex-verification" content="2028b5e2ecf05a40" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>KitFox</title>
     <style>
+        :root {
+            --bg-1: #07111f;
+            --bg-2: #0e1b31;
+            --bg-3: #11284a;
+            --card: rgba(12, 20, 35, 0.72);
+            --card-strong: rgba(18, 30, 52, 0.88);
+            --line: rgba(255, 255, 255, 0.1);
+            --text: #ecf4ff;
+            --muted: #aab9d6;
+            --accent: #7dd3fc;
+            --accent-2: #8b5cf6;
+            --accent-3: #22c55e;
+            --warn: #fbbf24;
+            --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+            --radius-xl: 28px;
+            --radius-lg: 22px;
+            --radius-md: 16px;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            background: linear-gradient(145deg, #f8faff 0%, #eef2f9 100%);
-            color: #1a2634;
+            font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: var(--text);
             line-height: 1.5;
-            padding: 2rem 1.5rem;
+            background:
+                radial-gradient(circle at top left, rgba(125, 211, 252, 0.16), transparent 32%),
+                radial-gradient(circle at top right, rgba(139, 92, 246, 0.16), transparent 28%),
+                radial-gradient(circle at bottom center, rgba(34, 197, 94, 0.10), transparent 25%),
+                linear-gradient(160deg, var(--bg-1), var(--bg-2) 48%, var(--bg-3));
+            min-height: 100vh;
+            padding: 24px 18px;
+            overflow-x: hidden;
+        }
+
+        /* decorative background */
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            inset: auto;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.14;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::before {
+            left: -130px;
+            top: 50px;
+            background: #7dd3fc;
+        }
+
+        body::after {
+            right: -160px;
+            bottom: 40px;
+            background: #8b5cf6;
         }
 
         .container {
-            max-width: 1200px;
+            position: relative;
+            z-index: 1;
+            max-width: 1180px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.92);
-            border-radius: 2rem;
-            padding: 2rem;
-            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(180deg, rgba(10, 18, 31, 0.86), rgba(10, 18, 31, 0.72));
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 34px;
+            padding: 28px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(135deg, rgba(125, 211, 252, 0.07), transparent 35%),
+                linear-gradient(315deg, rgba(139, 92, 246, 0.08), transparent 32%);
+            pointer-events: none;
+        }
+
+        .hero {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1.3fr 0.9fr;
+            gap: 22px;
+            align-items: stretch;
+            margin-bottom: 26px;
+        }
+
+        .hero-main,
+        .hero-side,
+        .pricing-panel,
+        .works-panel,
+        .booking-section,
+        .footer-note {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-main {
+            background:
+                linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03)),
+                radial-gradient(circle at top right, rgba(125, 211, 252, 0.14), transparent 30%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+            overflow: hidden;
+        }
+
+        .hero-main::after {
+            content: "";
+            position: absolute;
+            inset: auto -40px -70px auto;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(125, 211, 252, 0.18), transparent 70%);
+            filter: blur(10px);
+            pointer-events: none;
+        }
+
+        .brand-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .brand-mark {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #7dd3fc, #8b5cf6);
+            display: grid;
+            place-items: center;
+            font-size: 1.5rem;
+            box-shadow: 0 14px 30px rgba(125, 211, 252, 0.22);
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .brand-name {
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+        }
+
+        .brand-tag {
+            color: var(--muted);
+            font-size: 0.95rem;
         }
 
         h1 {
-            text-align: center;
-            font-size: 2.4rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #1e3c72, #2b4c7c);
-            background-clip: text;
+            font-size: clamp(2rem, 4vw, 3.6rem);
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin: 14px 0 14px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ffffff 0%, #9ee7ff 35%, #c4b5fd 75%, #ffffff 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             color: transparent;
-            margin-bottom: 0.75rem;
+        }
+
+        .hero-copy {
+            color: #dbe7ff;
+            max-width: 62ch;
+            font-size: 1.04rem;
+            margin-bottom: 18px;
+        }
+
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .badge {
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            color: #dce7fb;
+            border-radius: 999px;
+            padding: 9px 14px;
+            font-size: 0.92rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-side {
+            display: grid;
+            gap: 18px;
+        }
+
+        .info-card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            padding: 24px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100%;
+        }
+
+        .info-card h2 {
+            font-size: 1.45rem;
+            margin-bottom: 8px;
+        }
+
+        .info-card p {
+            color: var(--muted);
+            margin-bottom: 18px;
+        }
+
+        .floating-stat {
+            display: grid;
+            gap: 12px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-item strong {
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .stat-item span {
+            color: var(--muted);
+            font-size: 0.95rem;
+            text-align: right;
+        }
+
+        .subhead-wrap {
+            text-align: center;
+            margin: 26px 0 12px;
         }
 
         .subhead {
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: #2c3e66;
-            border-bottom: 2px solid #cbdff2;
-            display: inline-block;
-            margin: 0 auto 1.5rem auto;
-            padding-bottom: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #eff6ff;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            padding: 12px 18px;
+            border-radius: 999px;
+        }
+
+        .pricing-panel {
+            margin-top: 18px;
+            padding: 8px 0 2px;
         }
 
         .pricing-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            justify-content: center;
-            margin: 2rem 0;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            margin: 18px 0 0;
         }
 
-        .card {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 1.4rem;
-            flex: 1 1 200px;
-            min-width: 180px;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
-            transition: 0.25s;
-            border: 1px solid #e9edf4;
-            text-align: center;
+        .pricing-card {
+            position: relative;
+            isolation: isolate;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.04)),
+                radial-gradient(circle at top right, rgba(125, 211, 252, 0.12), transparent 35%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 26px;
+            padding: 20px;
+            min-height: 210px;
             cursor: pointer;
+            transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.14);
+            overflow: hidden;
         }
 
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.2);
-            border-color: #2b5f8a;
-            background: #fefefe;
+        .pricing-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 40%),
+                radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.10), transparent 38%);
+            pointer-events: none;
+            z-index: -1;
         }
 
-        .card h3 {
+        .pricing-card:hover,
+        .pricing-card.active {
+            transform: translateY(-8px) rotate(-0.2deg);
+            border-color: rgba(125, 211, 252, 0.55);
+            box-shadow: 0 20px 36px rgba(0, 0, 0, 0.25);
+        }
+
+        .card-topline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            gap: 12px;
+        }
+
+        .card-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
             font-size: 1.2rem;
-            font-weight: 600;
-            color: #1e2f44;
-            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .card-chip {
+            font-size: 0.78rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #d7e6ff;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 7px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .pricing-card h3 {
+            font-size: 1.18rem;
+            margin-bottom: 8px;
+        }
+
+        .pricing-card p {
+            color: var(--muted);
+            margin-bottom: 18px;
+            font-size: 0.96rem;
         }
 
         .price {
-            font-size: 1.6rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.32rem;
             font-weight: 800;
-            color: #2b5f8a;
-            background: #eef3fc;
-            display: inline-block;
-            padding: 0.2rem 0.8rem;
-            border-radius: 60px;
-            margin-top: 0.5rem;
+            color: #eff8ff;
+            padding: 10px 14px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(125, 211, 252, 0.16), rgba(139, 92, 246, 0.12));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .price-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 14px;
+            font-size: 0.8rem;
+            color: #d7e6ff;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 8px 10px;
+            border-radius: 999px;
+        }
+
+        .works-panel {
+            margin-top: 34px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.04));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            padding: 24px;
         }
 
         .works-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin: 1.5rem 0 1rem;
-            color: #1f3a4b;
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 16px;
             text-align: center;
         }
 
-        .example-button {
-            display: inline-block;
-            background: linear-gradient(135deg, #2b5f8a, #1e4468);
-            color: white;
+        .work-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .work-text {
+            color: var(--muted);
             font-size: 1rem;
-            font-weight: 600;
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
+        }
+
+        .work-note {
+            margin-top: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .mini-pill {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            color: #dbe7ff;
+            font-size: 0.88rem;
+        }
+
+        .example-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #7dd3fc, #8b5cf6);
+            color: #08111d;
+            font-size: 1rem;
+            font-weight: 800;
+            padding: 0.9rem 1.4rem;
+            border-radius: 999px;
             text-decoration: none;
-            transition: 0.25s;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            margin: 1rem 0;
+            transition: 0.25s ease;
+            box-shadow: 0 12px 26px rgba(125, 211, 252, 0.18);
+            margin-top: 16px;
         }
 
         .example-button:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+        }
+
+        .showcase {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 26px;
+            padding: 18px;
         }
 
         .small-photo {
-            max-width: 250px;
+            max-width: 100%;
             width: 100%;
             height: auto;
-            border-radius: 28px;
-            box-shadow: 0 12px 18px -6px rgba(0, 0, 0, 0.2);
-            border: 3px solid white;
+            border-radius: 22px;
+            box-shadow: 0 18px 32px rgba(0, 0, 0, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            object-fit: cover;
         }
 
         .photo-caption {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #2b5f8a;
-            background: #eef3fc;
-            padding: 0.3rem 1.2rem;
-            border-radius: 50px;
-            display: inline-block;
-            margin-top: 0.75rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #eff6ff;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 10px 14px;
+            border-radius: 999px;
+            display: inline-flex;
+            margin-top: 14px;
         }
 
         .booking-section {
-            margin-top: 2rem;
-            background: white;
-            border-radius: 1.5rem;
-            padding: 1.8rem;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            margin-top: 34px;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04)),
+                radial-gradient(circle at top right, rgba(34, 197, 94, 0.10), transparent 35%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            padding: 26px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
             scroll-margin-top: 20px;
         }
 
         .booking-title {
-            font-size: 1.6rem;
-            font-weight: 700;
+            font-size: 1.7rem;
+            font-weight: 800;
             text-align: center;
-            color: #1e3c72;
-            margin-bottom: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .booking-subtitle {
+            text-align: center;
+            color: var(--muted);
+            margin-bottom: 20px;
         }
 
         .booking-form {
-            max-width: 450px;
+            max-width: 520px;
             margin: 0 auto;
         }
 
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 14px;
         }
 
         .form-group label {
             display: block;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-            color: #2c3e66;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #edf4ff;
+            font-size: 0.95rem;
         }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 0.7rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 0.95rem;
+            padding: 0.85rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-radius: 16px;
+            font-size: 0.98rem;
             font-family: inherit;
+            color: #eef6ff;
+            background: rgba(6, 12, 22, 0.55);
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #8fa4c7;
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
-            outline: none;
-            border-color: #2b5f8a;
+            border-color: rgba(125, 211, 252, 0.75);
+            box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.12);
         }
 
         .submit-btn {
             width: 100%;
-            background: linear-gradient(135deg, #2b5f8a, #1e4468);
-            color: white;
+            background: linear-gradient(135deg, #7dd3fc, #8b5cf6);
+            color: #07111f;
             font-size: 1rem;
-            font-weight: 600;
-            padding: 0.8rem;
+            font-weight: 900;
+            padding: 0.95rem;
             border: none;
-            border-radius: 50px;
+            border-radius: 999px;
             cursor: pointer;
-            transition: 0.25s;
+            transition: 0.25s ease;
+            margin-top: 4px;
         }
 
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 14px 28px rgba(125, 211, 252, 0.14);
         }
 
         .submit-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message,
+        .error-message {
+            padding: 0.85rem 1rem;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 14px;
+            display: none;
+            font-weight: 600;
         }
 
         .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 0.8rem;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 1rem;
-            display: none;
+            background: rgba(34, 197, 94, 0.16);
+            border: 1px solid rgba(34, 197, 94, 0.22);
+            color: #b9f6cf;
         }
 
         .error-message {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 0.8rem;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 1rem;
-            display: none;
+            background: rgba(239, 68, 68, 0.16);
+            border: 1px solid rgba(239, 68, 68, 0.22);
+            color: #ffd1d1;
         }
 
         .footer-note {
-            margin-top: 2rem;
+            margin-top: 18px;
             text-align: center;
-            font-size: 0.8rem;
-            color: #4c6f8f;
-            border-top: 1px solid #dce5f0;
-            padding-top: 1.2rem;
+            font-size: 0.85rem;
+            color: #9fb1d3;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .footer-note + .footer-note {
+            margin-top: 10px;
+            padding-top: 0;
+            border-top: none;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-2 {
+            margin-bottom: 1rem;
+        }
+
+        .site-selected {
+            outline: 2px solid rgba(125, 211, 252, 0.25);
+        }
+
+        @media (max-width: 980px) {
+            .hero,
+            .work-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
         }
 
         @media (max-width: 650px) {
-            body { padding: 1rem; }
-            .container { padding: 1rem; }
-            h1 { font-size: 1.6rem; }
-            .small-photo { max-width: 200px; }
-        }
+            body {
+                padding: 12px;
+            }
 
-        .text-center { text-align: center; }
-        .mb-2 { margin-bottom: 1rem; }
-        
-        .price-badge {
-            display: inline-block;
-            background: #eef3fc;
-            border-radius: 20px;
-            padding: 0.2rem 0.6rem;
-            font-size: 0.7rem;
-            margin-top: 0.5rem;
-            color: #2b5f8a;
-        }
-        
-        .card {
-            transition: all 0.3s ease;
+            .container {
+                padding: 14px;
+                border-radius: 24px;
+            }
+
+            .hero-main,
+            .info-card,
+            .works-panel,
+            .booking-section {
+                border-radius: 22px;
+                padding: 18px;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.9rem;
+            }
+
+            .works-title {
+                font-size: 1.35rem;
+            }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>✨ Вас приветствует KitFox ✨</h1>
-    <div class="text-center">
-        <div class="subhead">📌 Актуальные цены на создание сайтов</div>
-    </div>
+    <div class="container">
+        <section class="hero">
+            <div class="hero-main">
+                <div class="brand-row">
+                    <div class="brand-mark">🦊</div>
+                    <div class="brand-text">
+                        <div class="brand-name">KitFox</div>
+                        <div class="brand-tag">создание сайтов с характером</div>
+                    </div>
+                </div>
 
-    <div class="pricing-grid">
-        <div class="card" data-site-type="Простой без сервера, без css (от 10 000₽)">
-            <h3>🌐 Простой сайт</h3>
-            <p>Без сервера, без css</p>
-            <div class="price">от 10 000 ₽</div>
-            <div class="price-badge">📱 Нажмите для заказа</div>
-        </div>
-        <div class="card" data-site-type="Простой с сервером, без css (от 15 000₽)">
-            <h3>⚙️ Простой сайт</h3>
-            <p>С сервером, без css</p>
-            <div class="price">от 15 000 ₽</div>
-            <div class="price-badge">📱 Нажмите для заказа</div>
-        </div>
-        <div class="card" data-site-type="Красивый без сервера (от 20 000₽)">
-            <h3>🎨 Красиво оформленный</h3>
-            <p>Без сервера</p>
-            <div class="price">от 20 000 ₽</div>
-            <div class="price-badge">📱 Нажмите для заказа</div>
-        </div>
-        <div class="card" data-site-type="Премиум с сервером (от 25 000₽)">
-            <h3>🚀 Премиум сайт</h3>
-            <p>С сервером</p>
-            <div class="price">от 25 000 ₽</div>
-            <div class="price-badge">📱 Нажмите для заказа</div>
-        </div>
-    </div>
+                <h1><span class="gradient-text">Сайт, который выглядит не как шаблон</span></h1>
+                <p class="hero-copy">
+                    Я делаю сайты под задачу: от простого и быстрого решения до более выразительного и
+                    премиального оформления. Ниже — актуальные цены и онлайн-запись.
+                </p>
 
-    <div class="works-title">📁 Мои работы</div>
-    <div class="text-center mb-2">
-        <a href="https://kitfox-saitcreator.github.io/Alexandr_Vladimirovich_Parshakov/" target="_blank" class="example-button">
-            🔗 Нажмите, чтобы посмотреть пример
-        </a>
-    </div>
-    <div class="text-center">
-        <img src="Primer_urist.png" 
-             alt="Премиум сайт" 
-             class="small-photo"
-             onerror="this.onerror=null; this.src='https://via.placeholder.com/500x350/2b5f8a/white?text=Премиум+сайт'">
-        <div class="photo-caption">✨ Это премиум сайт ✨</div>
-    </div>
-
-    <!-- ФОРМА ОНЛАЙН-ЗАПИСИ НА ПОЧТУ -->
-    <div id="bookingSection" class="booking-section">
-        <div class="booking-title">📝 Онлайн-запись</div>
-        <form id="bookingForm" class="booking-form">
-            <div class="form-group">
-                <label>👤 Ваше имя *</label>
-                <input type="text" id="userName" required placeholder="Как к вам обращаться?">
+                <div class="hero-badges">
+                    <span class="badge">⚡ Быстрый старт</span>
+                    <span class="badge">🎨 Уникальный дизайн</span>
+                    <span class="badge">📱 Адаптивность</span>
+                    <span class="badge">✉️ Заявка на почту</span>
+                </div>
             </div>
-            <div class="form-group">
-                <label>📞 Телефон *</label>
-                <input type="tel" id="userPhone" required placeholder="+7 XXX XXX-XX-XX">
+
+            <aside class="hero-side">
+                <div class="info-card">
+                    <div>
+                        <h2>Что вы получаете</h2>
+                        <p>Аккуратный визуал, понятную структуру и удобную форму заявки без лишних блоков.</p>
+                    </div>
+                    <div class="floating-stat">
+                        <div class="stat-item">
+                            <strong>Формат</strong>
+                            <span>Лендинг / визитка / портфолио</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>Связь</strong>
+                            <span>Онлайн-запись через форму</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>Подход</strong>
+                            <span>Индивидуально под проект</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <div class="subhead-wrap">
+            <div class="subhead">📌 Актуальные цены на создание сайтов</div>
+        </div>
+
+        <section class="pricing-panel">
+            <div class="pricing-grid">
+                <div class="pricing-card" data-site-type="Простой без сервера (от 10 000₽)">
+                    <div class="card-topline">
+                        <div class="card-icon">🌐</div>
+                        <div class="card-chip">Базовый</div>
+                    </div>
+                    <h3>Простой сайт</h3>
+                    <p>Без сервера, без css</p>
+                    <div class="price">от 10 000 ₽</div>
+                    <div class="price-badge">Нажмите для заказа</div>
+                </div>
+
+                <div class="pricing-card" data-site-type="Простой с сервером (от 15 000₽)">
+                    <div class="card-topline">
+                        <div class="card-icon">⚙️</div>
+                        <div class="card-chip">Практичный</div>
+                    </div>
+                    <h3>Простой сайт</h3>
+                    <p>С сервером, без css</p>
+                    <div class="price">от 15 000 ₽</div>
+                    <div class="price-badge">Нажмите для заказа</div>
+                </div>
+
+                <div class="pricing-card" data-site-type="Красивый без сервера (от 20 000₽)">
+                    <div class="card-topline">
+                        <div class="card-icon">🎨</div>
+                        <div class="card-chip">Дизайн</div>
+                    </div>
+                    <h3>Красиво оформленный</h3>
+                    <p>Без сервера</p>
+                    <div class="price">от 20 000 ₽</div>
+                    <div class="price-badge">Нажмите для заказа</div>
+                </div>
+
+                <div class="pricing-card" data-site-type="Премиум с сервером (от 25 000₽)">
+                    <div class="card-topline">
+                        <div class="card-icon">🚀</div>
+                        <div class="card-chip">Премиум</div>
+                    </div>
+                    <h3>Премиум сайт</h3>
+                    <p>С сервером</p>
+                    <div class="price">от 25 000 ₽</div>
+                    <div class="price-badge">Нажмите для заказа</div>
+                </div>
             </div>
-            <div class="form-group">
-                <label>🎯 Тип сайта</label>
-                <select id="siteType">
-                    <option value="Простой без сервера (от 10 000₽)">Простой сайт без сервера</option>
-                    <option value="Простой с сервером (от 15 000₽)">Простой сайт с сервером</option>
-                    <option value="Красивый без сервера (от 20 000₽)">Красиво оформленный без сервера</option>
-                    <option value="Премиум с сервером (от 25 000₽)">Премиум сайт с сервером</option>
-                    <option value="Нужна консультация">Нужна консультация</option>
-                </select>
+        </section>
+
+        <section class="works-panel">
+            <div class="works-title">📁 Мои работы</div>
+            <div class="work-layout">
+                <div>
+                    <p class="work-text">
+                        Ниже пример сайта, чтобы можно было оценить стиль, подачу и качество оформления.
+                        Если хотите — могу сделать похожую структуру, но в другом визуальном стиле.
+                    </p>
+                    <a
+                        href="https://kitfox-saitcreator.github.io/Alexandr_Vladimirovich_Parshakov/"
+                        target="_blank"
+                        class="example-button"
+                    >
+                        🔗 Нажмите, чтобы посмотреть пример
+                    </a>
+
+                    <div class="work-note">
+                        <span class="mini-pill">Уникальная подача</span>
+                        <span class="mini-pill">Современный стиль</span>
+                        <span class="mini-pill">Гибкая структура</span>
+                    </div>
+                </div>
+
+                <div class="showcase">
+                    <img
+                        src="Primer_urist.png"
+                        alt="Премиум сайт"
+                        class="small-photo"
+                        onerror="this.onerror=null; this.src='https://via.placeholder.com/900x600/0e1b31/ffffff?text=Премиум+сайт';"
+                    />
+                    <div class="photo-caption">✨ Это премиум сайт ✨</div>
+                </div>
             </div>
-            <div class="form-group">
-                <label>💬 Дополнительная информация</label>
-                <textarea id="userComment" rows="2" placeholder="Ваши пожелания или вопросы..."></textarea>
+        </section>
+
+        <!-- ФОРМА ОНЛАЙН-ЗАПИСИ НА ПОЧТУ -->
+        <section id="bookingSection" class="booking-section">
+            <div class="booking-title">📝 Онлайн-запись</div>
+            <div class="booking-subtitle">Оставьте заявку — я свяжусь с вами в ближайшее время.</div>
+
+            <form id="bookingForm" class="booking-form">
+                <div class="form-group">
+                    <label>👤 Ваше имя *</label>
+                    <input type="text" id="userName" required placeholder="Как к вам обращаться?" />
+                </div>
+
+                <div class="form-group">
+                    <label>📞 Телефон *</label>
+                    <input type="tel" id="userPhone" required placeholder="+7 XXX XXX-XX-XX" />
+                </div>
+
+                <div class="form-group">
+                    <label>🎯 Тип сайта</label>
+                    <select id="siteType">
+                        <option value="Простой без сервера (от 10 000₽)">Простой сайт без сервера</option>
+                        <option value="Простой с сервером (от 15 000₽)">Простой сайт с сервером</option>
+                        <option value="Красивый без сервера (от 20 000₽)">Красиво оформленный без сервера</option>
+                        <option value="Премиум с сервером (от 25 000₽)">Премиум сайт с сервером</option>
+                        <option value="Нужна консультация">Нужна консультация</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>💬 Дополнительная информация</label>
+                    <textarea id="userComment" rows="3" placeholder="Ваши пожелания или вопросы..."></textarea>
+                </div>
+
+                <button type="button" class="submit-btn" onclick="sendToEmail()">✉️ Отправить заявку</button>
+
+                <div id="successMsg" class="success-message">✅ Заявка отправлена! Я свяжусь с вами в ближайшее время.</div>
+                <div id="errorMsg" class="error-message">❌ Ошибка отправки. Попробуйте ещё раз или позвоните по телефону.</div>
+            </form>
+
+            <div class="text-center" style="margin-top: 0.9rem; font-size: 0.85rem; color: #97a9cb;">
+                Я отвечу в течение 15 минут.
             </div>
-            <button type="button" class="submit-btn" onclick="sendToEmail()">✉️ Отправить заявку</button>
-            <div id="successMsg" class="success-message">✅ Заявка отправлена! Я свяжусь с вами в ближайшее время.</div>
-            <div id="errorMsg" class="error-message">❌ Ошибка отправки. Попробуйте ещё раз или позвоните по телефону.</div>
-        </form>
-        <div class="text-center" style="margin-top: 0.8rem; font-size: 0.8rem; color: #6c86a3;">
-             Я отвечу в течение 15 минут.
+        </section>
+
+        <div class="footer-note">
+            ⚡ Актуальные цены от | Связь после заявки | Гарантия качества
+        </div>
+        <div class="footer-note">
+            | KitFox |
         </div>
     </div>
 
-    <div class="footer-note">
-        ⚡ Актуальные цены от | Связь после заявки | Гарантия качества
-    </div>
-    <div class="footer-note">
-         |KitFox|
-    </div>
-</div>
+    <script>
+        const YOUR_EMAIL = "kat1366648@gmail.com";
 
-<script>
-    // ============================================
-    // ВАША ПОЧТА (уже вставлена)
-    // ============================================
-    const YOUR_EMAIL = "kat1366648@gmail.com";
-    
-    // ============================================
-    // Функция для выбора товара и скролла к форме
-    // ============================================
-    function selectSiteTypeAndScroll(siteType, event) {
-        // Меняем выбранное значение в select
-        const siteTypeSelect = document.getElementById('siteType');
-        for (let i = 0; i < siteTypeSelect.options.length; i++) {
-            if (siteTypeSelect.options[i].value === siteType) {
-                siteTypeSelect.selectedIndex = i;
-                break;
+        function selectSiteTypeAndScroll(siteType, event) {
+            const siteTypeSelect = document.getElementById("siteType");
+            for (let i = 0; i < siteTypeSelect.options.length; i++) {
+                if (siteTypeSelect.options[i].value === siteType) {
+                    siteTypeSelect.selectedIndex = i;
+                    break;
+                }
+            }
+
+            document.querySelectorAll(".pricing-card").forEach(card => {
+                card.classList.remove("active");
+            });
+
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add("active");
+            }
+
+            const bookingSection = document.getElementById("bookingSection");
+            bookingSection.style.transition = "0.3s";
+            bookingSection.style.boxShadow = "0 0 0 3px rgba(125, 211, 252, 0.18), 0 18px 40px rgba(0,0,0,0.16)";
+
+            setTimeout(() => {
+                bookingSection.style.boxShadow = "";
+            }, 1000);
+
+            bookingSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+            if (event && typeof navigator.vibrate === "function") {
+                navigator.vibrate(40);
             }
         }
-        
-        // Добавляем эффект подсветки формы
-        const bookingSection = document.getElementById('bookingSection');
-        bookingSection.style.transition = '0.3s';
-        bookingSection.style.boxShadow = '0 0 0 3px #2b5f8a, 0 8px 20px rgba(0,0,0,0.1)';
-        setTimeout(() => {
-            bookingSection.style.boxShadow = '';
-        }, 1000);
-        
-        // Плавный скролл к форме
-        bookingSection.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
+
+        document.querySelectorAll(".pricing-card").forEach(card => {
+            const siteType = card.getAttribute("data-site-type");
+            if (siteType) {
+                card.addEventListener("click", (event) => {
+                    selectSiteTypeAndScroll(siteType, event);
+                });
+            }
         });
-        
-        // Небольшая вибрация на мобильных (если поддерживается)
-        if (event && event.target && typeof navigator.vibrate === 'function') {
-            navigator.vibrate(50);
+
+        function sendToEmail() {
+            const name = document.getElementById("userName").value.trim();
+            const phone = document.getElementById("userPhone").value.trim();
+            const siteType = document.getElementById("siteType").value;
+            const comment = document.getElementById("userComment").value.trim();
+
+            if (!name) {
+                alert("Пожалуйста, введите ваше имя!");
+                document.getElementById("userName").focus();
+                return;
+            }
+
+            if (!phone) {
+                alert("Пожалуйста, введите номер телефона!");
+                document.getElementById("userPhone").focus();
+                return;
+            }
+
+            const submitBtn = document.querySelector(".submit-btn");
+            const originalText = submitBtn.innerText;
+            submitBtn.disabled = true;
+            submitBtn.innerText = "⏳ Отправка...";
+
+            document.getElementById("successMsg").style.display = "none";
+            document.getElementById("errorMsg").style.display = "none";
+
+            const subject = `Новая заявка на сайт от ${name}`;
+            const body = [
+                "📋 НОВАЯ ЗАЯВКА НА СОЗДАНИЕ САЙТА",
+                "",
+                `👤 Имя: ${name}`,
+                `📞 Телефон: ${phone}`,
+                `🎯 Тип сайта: ${siteType}`,
+                `💬 Комментарий: ${comment || "нет"}`,
+                "",
+                "---",
+                "Отправлено с сайта-портфолио",
+                new Date().toLocaleString("ru-RU")
+            ].join("\n");
+
+            window.location.href = `mailto:${YOUR_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+            document.getElementById("successMsg").style.display = "block";
+
+            document.getElementById("userName").value = "";
+            document.getElementById("userPhone").value = "";
+            document.getElementById("userComment").value = "";
+
+            submitBtn.disabled = false;
+            submitBtn.innerText = originalText;
+
+            setTimeout(() => {
+                document.getElementById("successMsg").style.display = "none";
+            }, 5000);
         }
-    }
-    
-    // Навешиваем обработчики на карточки
-    document.querySelectorAll('.card').forEach(card => {
-        const siteType = card.getAttribute('data-site-type');
-        if (siteType) {
-            card.addEventListener('click', (event) => {
-                selectSiteTypeAndScroll(siteType, event);
-            });
-        }
-    });
-    
-    // ============================================
-    // Отправка на почту
-    // ============================================
-    function sendToEmail() {
-        // Получаем данные
-        const name = document.getElementById('userName').value.trim();
-        const phone = document.getElementById('userPhone').value.trim();
-        const siteType = document.getElementById('siteType').value;
-        const comment = document.getElementById('userComment').value.trim();
-        
-        // Проверка
-        if (!name) {
-            alert('Пожалуйста, введите ваше имя!');
-            document.getElementById('userName').focus();
-            return;
-        }
-        
-        if (!phone) {
-            alert('Пожалуйста, введите номер телефона!');
-            document.getElementById('userPhone').focus();
-            return;
-        }
-        
-        // Блокируем кнопку
-        const submitBtn = document.querySelector('.submit-btn');
-        const originalText = submitBtn.innerText;
-        submitBtn.disabled = true;
-        submitBtn.innerText = '⏳ Отправка...';
-        
-        // Скрываем старые сообщения
-        document.getElementById('successMsg').style.display = 'none';
-        document.getElementById('errorMsg').style.display = 'none';
-        
-        // Формируем письмо
-        const subject = `Новая заявка на сайт от ${name}`;
-        const body = `📋 НОВАЯ ЗАЯВКА НА СОЗДАНИЕ САЙТА%0A%0A` +
-            `👤 Имя: ${name}%0A` +
-            `📞 Телефон: ${phone}%0A` +
-            `🎯 Тип сайта: ${siteType}%0A` +
-            `💬 Комментарий: ${comment || 'нет'}%0A%0A` +
-            `---%0AОтправлено с сайта-портфолио%0A${new Date().toLocaleString('ru-RU')}`;
-        
-        // Открываем почтовый клиент
-        window.location.href = `mailto:${YOUR_EMAIL}?subject=${encodeURIComponent(subject)}&body=${body}`;
-        
-        // Показываем сообщение об успехе
-        document.getElementById('successMsg').style.display = 'block';
-        
-        // Очищаем форму
-        document.getElementById('userName').value = '';
-        document.getElementById('userPhone').value = '';
-        document.getElementById('userComment').value = '';
-        // Сбрасываем select на первый вариант, но не сбрасываем если был выбран через карточку
-        // document.getElementById('siteType').selectedIndex = 0;
-        
-        // Разблокируем кнопку
-        submitBtn.disabled = false;
-        submitBtn.innerText = originalText;
-        
-        // Скрываем сообщение через 5 секунд
-        setTimeout(() => {
-            document.getElementById('successMsg').style.display = 'none';
-        }, 5000);
-    }
-</script>
+    </script>
 </body>
 </html>
