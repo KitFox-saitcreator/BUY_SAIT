@@ -99,6 +99,52 @@
             pointer-events: none;
         }
 
+        /* ===== АНИМАЦИЯ ПОЯВЛЕНИЯ (работает в обе стороны) ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Анимация для появления сверху (при скролле вверх) */
+        .reveal-from-top {
+            opacity: 0;
+            transform: translateY(-50px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+
+        .reveal-from-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Задержки для каскадного эффекта */
+        .reveal-delay-1 {
+            transition-delay: 0.05s;
+        }
+        .reveal-delay-2 {
+            transition-delay: 0.1s;
+        }
+        .reveal-delay-3 {
+            transition-delay: 0.15s;
+        }
+        .reveal-delay-4 {
+            transition-delay: 0.2s;
+        }
+        .reveal-delay-5 {
+            transition-delay: 0.25s;
+        }
+
+        /* Герой всегда виден, но добавим лёгкую анимацию появления */
         .hero {
             position: relative;
             display: grid;
@@ -106,6 +152,16 @@
             gap: 22px;
             align-items: stretch;
             margin-bottom: 26px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: heroFadeIn 0.9s ease forwards;
+        }
+
+        @keyframes heroFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .hero-main,
@@ -636,6 +692,84 @@
             outline: 2px solid rgba(125, 211, 252, 0.25);
         }
 
+        /* ===== ПЛАВАЮЩАЯ КНОПКА ===== */
+        .floating-booking-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 999;
+            background: linear-gradient(135deg, #7dd3fc, #8b5cf6);
+            color: #07111f;
+            border: none;
+            border-radius: 999px;
+            padding: 14px 22px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(125, 211, 252, 0.35);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            font-family: inherit;
+        }
+
+        .floating-booking-btn.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .floating-booking-btn:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 14px 40px rgba(125, 211, 252, 0.45);
+        }
+
+        .floating-booking-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* мобильная адаптация кнопки */
+        @media (max-width: 650px) {
+            .floating-booking-btn {
+                bottom: 16px;
+                right: 16px;
+                padding: 12px 16px;
+                font-size: 0.85rem;
+                gap: 8px;
+                border-radius: 999px;
+            }
+
+            .floating-booking-btn .btn-icon {
+                font-size: 1.1rem;
+            }
+
+            .floating-booking-btn .btn-text {
+                display: inline;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .floating-booking-btn {
+                padding: 10px 14px;
+                font-size: 0.78rem;
+                gap: 6px;
+                bottom: 12px;
+                right: 12px;
+            }
+
+            .floating-booking-btn .btn-text {
+                display: none;
+            }
+
+            .floating-booking-btn .btn-icon {
+                font-size: 1.3rem;
+            }
+        }
+
         @media (max-width: 980px) {
             .hero,
             .work-layout {
@@ -681,6 +815,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- HERO — анимация при загрузке -->
         <section class="hero">
             <div class="hero-main">
                 <div class="brand-row">
@@ -729,13 +864,15 @@
             </aside>
         </section>
 
-        <div class="subhead-wrap">
+        <!-- ЗАГОЛОВОК С ЦЕНАМИ -->
+        <div class="subhead-wrap reveal reveal-delay-1">
             <div class="subhead">📌 Актуальные цены на создание сайтов</div>
         </div>
 
+        <!-- КАРТОЧКИ ЦЕН -->
         <section class="pricing-panel">
             <div class="pricing-grid">
-                <div class="pricing-card" data-site-type="Простой без сервера (от 10 000₽)">
+                <div class="pricing-card reveal reveal-delay-1" data-site-type="Простой без сервера (от 10 000₽)">
                     <div class="card-topline">
                         <div class="card-icon">🌐</div>
                         <div class="card-chip">Базовый</div>
@@ -746,7 +883,7 @@
                     <div class="price-badge">Нажмите для заказа</div>
                 </div>
 
-                <div class="pricing-card" data-site-type="Простой с сервером (от 15 000₽)">
+                <div class="pricing-card reveal reveal-delay-2" data-site-type="Простой с сервером (от 15 000₽)">
                     <div class="card-topline">
                         <div class="card-icon">⚙️</div>
                         <div class="card-chip">Практичный</div>
@@ -757,7 +894,7 @@
                     <div class="price-badge">Нажмите для заказа</div>
                 </div>
 
-                <div class="pricing-card" data-site-type="Красивый без сервера (от 20 000₽)">
+                <div class="pricing-card reveal reveal-delay-3" data-site-type="Красивый без сервера (от 20 000₽)">
                     <div class="card-topline">
                         <div class="card-icon">🎨</div>
                         <div class="card-chip">Дизайн</div>
@@ -768,7 +905,7 @@
                     <div class="price-badge">Нажмите для заказа</div>
                 </div>
 
-                <div class="pricing-card" data-site-type="Премиум с сервером (от 25 000₽)">
+                <div class="pricing-card reveal reveal-delay-4" data-site-type="Премиум с сервером (от 25 000₽)">
                     <div class="card-topline">
                         <div class="card-icon">🚀</div>
                         <div class="card-chip">Премиум</div>
@@ -781,7 +918,8 @@
             </div>
         </section>
 
-        <section class="works-panel">
+        <!-- БЛОК РАБОТ -->
+        <section class="works-panel reveal reveal-delay-1">
             <div class="works-title">📁 Мои работы</div>
             <div class="work-layout">
                 <div>
@@ -816,8 +954,8 @@
             </div>
         </section>
 
-        <!-- ФОРМА ОНЛАЙН-ЗАПИСИ НА ПОЧТУ -->
-        <section id="bookingSection" class="booking-section">
+        <!-- ФОРМА ОНЛАЙН-ЗАПИСИ -->
+        <section id="bookingSection" class="booking-section reveal reveal-delay-2">
             <div class="booking-title">📝 Онлайн-запись</div>
             <div class="booking-subtitle">Оставьте заявку — я свяжусь с вами в ближайшее время.</div>
 
@@ -859,13 +997,20 @@
             </div>
         </section>
 
-        <div class="footer-note">
+        <!-- ФУТЕР -->
+        <div class="footer-note reveal reveal-delay-3">
             ⚡ Актуальные цены от | Связь после заявки | Гарантия качества
         </div>
-        <div class="footer-note">
+        <div class="footer-note reveal reveal-delay-4">
             | KitFox |
         </div>
     </div>
+
+    <!-- ===== ПЛАВАЮЩАЯ КНОПКА ===== -->
+    <button id="floatingBtn" class="floating-booking-btn" onclick="scrollToBooking()">
+        <span class="btn-icon">📝</span>
+        <span class="btn-text">Записаться</span>
+    </button>
 
     <script>
         const YOUR_EMAIL = "kat1366648@gmail.com";
@@ -969,6 +1114,96 @@
                 document.getElementById("successMsg").style.display = "none";
             }, 5000);
         }
+
+        // ===== ПОКАЗ/СКРЫТИЕ ПЛАВАЮЩЕЙ КНОПКИ =====
+        function scrollToBooking() {
+            const bookingSection = document.getElementById("bookingSection");
+            bookingSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+        const floatingBtn = document.getElementById("floatingBtn");
+        let lastScrollY = window.scrollY;
+        let hideTimeout = null;
+
+        function handleFloatingBtnVisibility() {
+            const bookingSection = document.getElementById("bookingSection");
+            const rect = bookingSection.getBoundingClientRect();
+            const isBookingVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+            if (isBookingVisible) {
+                floatingBtn.classList.remove("visible");
+                return;
+            }
+
+            const scrollY = window.scrollY;
+            if (scrollY > 300) {
+                floatingBtn.classList.add("visible");
+            } else {
+                floatingBtn.classList.remove("visible");
+            }
+        }
+
+        let ticking = false;
+        window.addEventListener("scroll", () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    handleFloatingBtnVisibility();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        window.addEventListener("load", () => {
+            handleFloatingBtnVisibility();
+        });
+
+        window.addEventListener("resize", () => {
+            handleFloatingBtnVisibility();
+        });
+
+        // ===== АНИМАЦИЯ ПОЯВЛЕНИЯ ПРИ ПРОКРУТКЕ (В ОБЕ СТОРОНЫ) =====
+        function handleRevealAnimations() {
+            const reveals = document.querySelectorAll('.reveal');
+            const windowHeight = window.innerHeight;
+            
+            reveals.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                const elementCenter = rect.top + rect.height / 2;
+                const isVisible = elementCenter < windowHeight && rect.bottom > 0;
+                
+                if (isVisible) {
+                    el.classList.add('visible');
+                } else {
+                    el.classList.remove('visible');
+                }
+            });
+        }
+
+        // запускаем при загрузке
+        window.addEventListener('load', () => {
+            handleRevealAnimations();
+        });
+
+        // запускаем при прокрутке (с троттлингом)
+        let animationTicking = false;
+        window.addEventListener('scroll', () => {
+            if (!animationTicking) {
+                window.requestAnimationFrame(() => {
+                    handleRevealAnimations();
+                    animationTicking = false;
+                });
+                animationTicking = true;
+            }
+        });
+
+        // запускаем при ресайзе
+        window.addEventListener('resize', () => {
+            handleRevealAnimations();
+        });
     </script>
 </body>
 </html>
